@@ -211,6 +211,6 @@ __marimo__/
 .DS_Store
 
 # pycharm
-.idea/**/*
+.idea
 
 media
