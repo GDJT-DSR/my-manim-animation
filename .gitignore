@@ -214,3 +214,7 @@ __marimo__/
 .idea
 
 media
+
+.vscode
+
+.DS_Store
