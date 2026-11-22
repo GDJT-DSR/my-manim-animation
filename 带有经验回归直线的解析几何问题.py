@@ -16,12 +16,13 @@ class MyScene(MovingCameraScene):
         a = 2.5
         b = 1.5
         c = np.sqrt(a**2-b**2)
+        self.camera.frame.set(height=6)
 
         base_axes = Axes(
             x_range=[-2, 2, 1],
             y_range=[-1, 1, 1],
-            x_length=6,
-            y_length=4,
+            x_length=6.3,
+            y_length=4.3,
             axis_config={"include_tip": True, "stroke_width": 2,"include_ticks": False},
         ).move_to(center)
         axes = always_redraw(lambda: base_axes.copy().move_to(center))
@@ -33,7 +34,7 @@ class MyScene(MovingCameraScene):
         def current_A():
             return A0 + (A1 - A0) * A_pos.get_value()
 
-        point_A = always_redraw(lambda: Dot(current_A(), color=RED)).set_z_index(10)
+        point_A = always_redraw(lambda: Dot(current_A(), .05 , color=RED)).set_z_index(10)
 
         self.theta = ValueTracker(-PI / 2 + 0.3)
 
@@ -63,9 +64,9 @@ class MyScene(MovingCameraScene):
             A = current_A()
             u = np.array([np.cos(self.theta.get_value()), np.sin(self.theta.get_value()), 0])
             v = np.array([np.cos(self.theta.get_value() + PI / 2), np.sin(self.theta.get_value() + PI / 2), 0])
-            corner1 = A - u * 0.15
-            corner2 = A - u * 0.15 - v * 0.15
-            corner3 = A - v * 0.15
+            corner1 = A - u * 0.1
+            corner2 = A - u * 0.1 - v * 0.1
+            corner3 = A - v * 0.1
             marker = VMobject()
             marker.set_points_as_corners([corner1, corner2, corner3])
             marker.set_stroke(color=WHITE, width=3)
@@ -88,16 +89,16 @@ class MyScene(MovingCameraScene):
             return Line(p1, p2, color=BLUE)
 
         def current_point_B():
-            return Dot(line1_pts()[0], color=YELLOW, radius=0.08)
+            return Dot(line1_pts()[0], color=YELLOW, radius=0.05).set_z_index(8)
 
         def current_point_D():
-            return Dot(line1_pts()[1], color=YELLOW, radius=0.08)
+            return Dot(line1_pts()[1], color=YELLOW, radius=0.05).set_z_index(8)
 
         def current_point_C():
-            return Dot(line2_pts()[0], color=YELLOW, radius=0.08)
+            return Dot(line2_pts()[0], color=YELLOW, radius=0.05).set_z_index(8)
 
         def current_point_E():
-            return Dot(line2_pts()[1], color=YELLOW, radius=0.08)
+            return Dot(line2_pts()[1], color=YELLOW, radius=0.05).set_z_index(8)
 
         def current_line_BC():
             return Line(line1_pts()[1], line2_pts()[1], color=GREEN)
@@ -157,9 +158,10 @@ class MyScene(MovingCameraScene):
         self.wait(4)
 
         self.play(
-            self.camera.frame.animate.move_to([-3,-1.5,0]),
+            self.camera.frame.animate.move_to([-3,-1.5,0]).set(height=8),
             run_time = 2
         )
+        
         
         
 
@@ -178,9 +180,9 @@ class MyScene(MovingCameraScene):
         self.wait(2)
         self.play(Write(lineeq1))
         self.wait(2)
-        self.play(self.theta.animate.set_value(- PI / 2), run_time=1)
+        self.play(self.theta.animate.set_value(- PI / 2), run_time=2)
         self.wait(2)
-        self.play(self.theta.animate.set_value(- PI / 5), run_time=1)
+        self.play(self.theta.animate.set_value(- PI / 5), run_time=2)
 
         lineeq2 = MathTex(r"0=\frac{\sum\limits_{i=1}^4x_iy_i-4\bar{x}\cdot\bar{y}}{\sum\limits_{i=1}^4x_i^2-4\bar{x}^2}(x_0-\bar{x})+\bar{y}")
         lineeq2.move_to(lineeq1,LEFT).set_color(YELLOW)
@@ -220,7 +222,7 @@ class MyScene(MovingCameraScene):
         self.play(Unwrite(sx))
 
         sy = VGroup(
-            MathTex('y_1+y_2 = - \\frac{2 b^{2} k c}{a^{2} k^{2} + b^{2}},\; y_3+y_4 = \\frac{2 b^{2} k t}{a^{2} + b^{2} k^{2}}'),
+            MathTex('y_1+y_2 = - \\frac{2 b^{2} k c}{a^{2} k^{2} + b^{2}},\; y_3+y_4 = \\frac{2 b^{2} k c}{a^{2} + b^{2} k^{2}}'),
             MathTex('\sum_{i=1}^4y_i= \\frac{2 b^{2} c^3 k \\left(k^2-1\\right)}{\\left(a^{2} + b^{2} k^{2}\\right) \\left(a^{2} k^{2} + b^{2}\\right)}')
         ).arrange(DOWN, buff=.2, aligned_edge = LEFT).next_to(lineeq6, DOWN, .4, LEFT).set_color(GREEN)
         self.play(Write(sy))
@@ -237,7 +239,7 @@ class MyScene(MovingCameraScene):
         self.play(Unwrite(sxsq))
 
         sxy = VGroup(
-            MathTex('x_1y_1+x_2y_2 = - \\frac{2 a^{2} b^{2} k \\left(- a^{2} k^{2} - b^{2} + 2 k^{2} t^{2}\\right)}{\\left(a^{2} k^{2} + b^{2}\\right)^{2}},\; x_3y_3+x_3y_4 = \\frac{2 a^{2} b^{2} k \\left(- a^{2} - b^{2} k^{2} + 2 t^{2}\\right)}{\\left(a^{2} + b^{2} k^{2}\\right)^{2}}'),
+            MathTex('x_1y_1+x_2y_2 = - \\frac{2 a^{2} b^{2} k \\left(a^{2} k^{2} - 2 b^{2} k^{2} - b^{2}\\right)}{\\left(a^{2} k^{2} + b^{2}\\right)^{2}} , \; x_3y_3+x_3y_4 = \\frac{2 a^{2} b^{2} k \\left(a^{2} - b^{2} k^{2} - 2 b^{2}\\right)}{\\left(a^{2} + b^{2} k^{2}\\right)^{2}}'),
             MathTex('\sum_{i=1}^4x_iy_i= \\frac{2 a^{2} b^{2}c^2 k \\left(k^2-1\\right)B}{\\left(a^{2} + b^{2} k^{2}\\right)^{2} \\left(a^{2} k^{2} + b^{2}\\right)^{2}}'),
             MathTex('\\text{其中}B=a^{4} k^{2} - a^{2} b^{2} k^{4} - 4 a^{2} b^{2} k^{2} - a^{2} b^{2} - 2 b^{4} k^{4} - 3 b^{4} k^{2} - 2 b^{4}')
         ).arrange(DOWN, buff=.2, aligned_edge = LEFT).next_to(lineeq6, DOWN, .4, LEFT).set_color(BLUE)
@@ -248,6 +250,7 @@ class MyScene(MovingCameraScene):
         uptitle = Tex('分子=').next_to(lineeq6, DOWN, .5, LEFT).set_color(RED)
         up1 = VGroup(
             MathTex(r'\sum\limits_{i=1}^4x_i\sum\limits_{i=1}^4x_iy_i -\sum\limits_{i=1}^4y_i \sum\limits_{i=1}^4x_i^2'),
+            MathTex('\\frac{2 a^{2} c \\left(2 a^{2} k^{2} + b^{2} k^{4} + b^{2}\\right)}{\\left(a^{2} + b^{2} k^{2}\\right) \\left(a^{2} k^{2} + b^{2}\\right)}\\cdot\\frac{2 a^{2} b^{2}c^2 k \\left(k^2-1\\right)B}{\\left(a^{2} + b^{2} k^{2}\\right)^{2} \\left(a^{2} k^{2} + b^{2}\\right)^{2}} - \\frac{2 b^{2} c^3 k \\left(k^2-1\\right)}{\\left(a^{2} + b^{2} k^{2}\\right) \\left(a^{2} k^{2} + b^{2}\\right)} \\cdot \\frac{2 a^{2} A}{\\left(a^{2} + b^{2} k^{2}\\right)^{2} \\left(a^{2} k^{2} + b^{2}\\right)^{2}}').scale(.8),
             MathTex('\\frac{4 a^{2} b^{2} c^{3}  \\left(k^{2} - 1\\right)}{\\left(a^2k^2+b^2\\right)^3\\left(a^2+b^2k^2\\right)^3}','\\left(a^{2} \\left(2 a^{2} k^{2} + b^{2} k^{4} + b^{2}\\right) \\cdot B -A\\right)'),
             MathTex('\\frac{4 a^{2} b^{2} c^{3}  \\left(k^{2} - 1\\right)}{\\left(a^2k^2+b^2\\right)^3\\left(a^2+b^2k^2\\right)^3}','\\left(- b^{2} \\left(a^{2} + b^{2} k^{2}\\right) \\left(3 a^{2} + b^{2}\\right) \\left(k^{2} + 1\\right)^{2} \\left(a^{2} k^{2} + b^{2}\\right)\\right)'),
             MathTex('-\\frac{4 a^{2} b^{4} c^{3}  \\left(k^{2} - 1\\right)\\left(3 a^{2} + b^{2}\\right) \\left(k^{2} + 1\\right)^{2}}{\\left(a^2k^2+b^2\\right)^2\\left(a^2+b^2k^2\\right)^2}  '),
@@ -262,6 +265,7 @@ class MyScene(MovingCameraScene):
         downtitle = Tex('分母=').next_to(uptitle, DOWN, .8, LEFT).set_color(RED)
         down1 = VGroup(
             MathTex(r'4 \sum\limits_{i=1}^4x_iy_i-\sum\limits_{i=1}^4x_i\sum\limits_{i=1}^4y_i}'),
+            MathTex('4 \\frac{2 a^{2} b^{2}c^2 k \\left(k^2-1\\right)B}{\\left(a^{2} + b^{2} k^{2}\\right)^{2} \\left(a^{2} k^{2} + b^{2}\\right)^{2}} - \\frac{2 a^{2} c \\left(2 a^{2} k^{2} + b^{2} k^{4} + b^{2}\\right)}{\\left(a^{2} + b^{2} k^{2}\\right) \\left(a^{2} k^{2} + b^{2}\\right)} \\cdot  \\frac{2 b^{2} c^3 k \\left(k^2-1\\right)}{\\left(a^{2} + b^{2} k^{2}\\right) \\left(a^{2} k^{2} + b^{2}\\right)}'),
             MathTex('\\frac{4a^2b^2c^2k\\left(k^2-1\\right)}{\\left(a^2k^2+b^2\\right)^2\\left(a^2+b^2k^2\\right)^2}','\\left( 2B-c^2\\left( 2a^2k^2+b^2k^4+b^2 \\right) \\right)'),
             MathTex('\\frac{4a^2b^2c^2k\\left(k^2-1\\right)}{\\left(a^2k^2+b^2\\right)^2\\left(a^2+b^2k^2\\right)^2}','\\left(  -3b^2\\left(a^2+b^2\\right)\\left(k^2+1\\right)^2  \\right)'),
             MathTex('-\\frac{12a^2b^2c^2k\\left(k^2-1\\right)\\left(a^2+b^2\\right)\\left(k^2+1\\right)^2}{\\left(a^2k^2+b^2\\right)^2\\left(a^2+b^2k^2\\right)^2}'),
@@ -275,14 +279,18 @@ class MyScene(MovingCameraScene):
         endvalue = MathTex(r'x_0 = \frac{c\left(3a^2+b^2\right)}{3\left(a^2+b^2\right)} = \mathrm{constant}')
         endvalue.next_to(downtitle, DOWN, .5, LEFT).set_color(YELLOW)
         self.play(Write(endvalue))
+        self.wait(2)
+
+        summary  = Tex('因此该直线过定点$(x_0,0)$').set_color(YELLOW).next_to(endvalue, RIGHT, .5, ORIGIN)
+        self.play(Write(summary))
         self.wait(5)
 
     
 
 # 生成视频并预览
 with tempconfig({
-    'quality': 'low_quality',
-    # 'quality': 'high_quality',
+    # 'quality': 'low_quality',
+    'quality': 'high_quality',
     'preview': True,
     # 'save_last_frame' : True
     'write_to_movie': True,

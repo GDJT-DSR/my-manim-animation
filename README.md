@@ -14,3 +14,4 @@ This is a repository for me to upload the Manim source code for Bilibili animati
 - [柯西方程二](./柯西方程二.py): [柯西方程(二)](https://www.bilibili.com/video/BV1w6BEBpER5/)
 - [lim_xlnx的证明](./lim_xlnx的证明.py): [高中内容如何计算xlnx的极限](https://www.bilibili.com/video/BV11drSBpErz/)
 - [n元不等式的导数方法解决](./n元不等式的导数方法解决.py): [利用导数解决多元代数不等式问题](https://www.bilibili.com/video/BV1AfzZBiE1k/)
+
